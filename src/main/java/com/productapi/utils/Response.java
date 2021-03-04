@@ -1,13 +1,19 @@
 package com.productapi.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+import static java.util.Arrays.asList;
+
 public class Response<T> {
     private boolean _success;
-    private String _message;
+    private List<Message> _messages;
     private T _data;
 
     public Response(boolean success, String message, T data) {
+        if (_messages == null && message != "") {
+            _messages = new ArrayList<Message>(asList(new Message(1, message)));
+        }
         _success = success;
-        _message = message;
         _data = data;
     }
 
@@ -15,8 +21,8 @@ public class Response<T> {
         return _success;
     }
 
-    public String getMessage() {
-        return _message;
+    public List<Message> getMessages() {
+        return _messages;
     }
 
     public T getData() {
