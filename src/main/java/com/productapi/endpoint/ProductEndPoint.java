@@ -1,5 +1,6 @@
 package com.productapi.endpoint;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,26 +13,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.productapi.models.Product;
+import com.productapi.domain.models.Product;
 import com.productapi.repository.ProductRepository;
 import com.productapi.utils.Response;
 
 @RestController
 @RequestMapping("/products")
 public class ProductEndPoint {
+    
+    @Autowired
     private ProductRepository _productRepository;
 
-    public ProductEndPoint() {
-        _productRepository = new ProductRepository();
-    }
-
     @GetMapping
-    public ResponseEntity<?> Get() {
+    public ResponseEntity<?> get() {
         return new ResponseEntity<>(new Response(true, "", _productRepository.getProducts()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> GetById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getById(@PathVariable("id") int id) {
         var product = _productRepository.getById(id);
         HttpStatus httpStatus = (product == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
         String message = (product == null ? "Produto não encontrado" : "");
@@ -39,9 +38,9 @@ public class ProductEndPoint {
     }
 
     @PostMapping
-    public ResponseEntity<?> Save(@RequestBody Product product) {
+    public ResponseEntity<?> save(@RequestBody Product product) {
         try {
-            _productRepository.Add(product);
+            _productRepository.create(product);
             return new ResponseEntity<>(new Response(true, "Produto adicionado com sucesso", product), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(new Response(false, "Erro ao adicionar o produto", product),
@@ -50,17 +49,17 @@ public class ProductEndPoint {
     }
 
     @PutMapping
-    public void Updade(@RequestBody Product product) {
+    public void updade(@RequestBody Product product) {
 
     }
 
     @DeleteMapping
-    public void Delete() {
+    public void delete() {
 
     }
 
     @PatchMapping
-    public void UpdatePart() {
+    public void path() {
 
     }
 }

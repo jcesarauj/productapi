@@ -1,4 +1,4 @@
-package com.productapi.models;
+package com.productapi.domain.models;
 
 public class Product {
     private int _id;

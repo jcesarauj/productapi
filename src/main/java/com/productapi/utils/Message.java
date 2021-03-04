@@ -1,7 +1,5 @@
 package com.productapi.utils;
 
-import java.util.List;
-
 public class Message{
     private int _number;
     private String _message;

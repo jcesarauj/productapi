@@ -3,7 +3,7 @@ package com.productapi.repository;
 import java.util.List;
 import static java.util.Arrays.asList;
 import java.util.ArrayList;
-import com.productapi.models.Product;
+import com.productapi.domain.models.Product;
 
 public class ProductRepository {
     private List<Product> _products;
@@ -12,8 +12,16 @@ public class ProductRepository {
         _products = new ArrayList<>(asList(new Product(1, "xbox360"), new Product(2, "ps1")));
     }
 
-    public void Add(Product product){
+    public void create(Product product){
         _products.add(product);
+    }
+
+    public void updade(Product product){
+       
+    }
+
+    public void delete(Product product){
+       
     }
 
     public List<Product> getProducts() {
