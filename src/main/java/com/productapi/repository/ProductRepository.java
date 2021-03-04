@@ -12,6 +12,10 @@ public class ProductRepository {
         _products = new ArrayList<>(asList(new Product(1, "xbox360"), new Product(2, "ps1")));
     }
 
+    public void Add(Product product){
+        _products.add(product);
+    }
+
     public List<Product> getProducts() {
         return _products;
     }

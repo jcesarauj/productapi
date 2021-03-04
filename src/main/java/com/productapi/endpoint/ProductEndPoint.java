@@ -39,22 +39,28 @@ public class ProductEndPoint {
     }
 
     @PostMapping
-    public void Save(@RequestBody Product product){
-
+    public ResponseEntity<?> Save(@RequestBody Product product) {
+        try {
+            _productRepository.Add(product);
+            return new ResponseEntity<>(new Response(true, "Produto adicionado com sucesso", product), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(new Response(false, "Erro ao adicionar o produto", product),
+                    HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
     @PutMapping
-    public void Updade(@RequestBody Product product){
+    public void Updade(@RequestBody Product product) {
 
     }
 
     @DeleteMapping
-    public void Delete(){
+    public void Delete() {
 
     }
 
     @PatchMapping
-    public void UpdatePart(){
+    public void UpdatePart() {
 
     }
 }
