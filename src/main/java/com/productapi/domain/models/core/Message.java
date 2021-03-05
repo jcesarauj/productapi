@@ -1,4 +1,4 @@
-package com.productapi.utils;
+package com.productapi.domain.models.core;
 
 public class Message{
     private int _number;

@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,32 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.productapi.domain.models.Product;
 import com.productapi.repository.ProductRepository;
-import com.productapi.utils.Response;
+import com.productapi.domain.models.core.*;
 
 @RestController
 @RequestMapping("/products")
 public class ProductEndPoint {
-    
+    private final ProductRepository _productRepository;
+
     @Autowired
-    private ProductRepository _productRepository;
-
-    @GetMapping
-    public ResponseEntity<?> get() {
-        return new ResponseEntity<>(new Response(true, "", _productRepository.getProducts()), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable("id") int id) {
-        var product = _productRepository.getById(id);
-        HttpStatus httpStatus = (product == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
-        String message = (product == null ? "Produto não encontrado" : "");
-        return new ResponseEntity<>(new Response(false, message, product), httpStatus);
+    public ProductEndPoint(ProductRepository productRepository) {
+        _productRepository = productRepository;
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Product product) {
+    public ResponseEntity<?> create(@RequestBody Product product) {
         try {
-            _productRepository.create(product);
+            _productRepository.save(product);
             return new ResponseEntity<>(new Response(true, "Produto adicionado com sucesso", product), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(new Response(false, "Erro ao adicionar o produto", product),
@@ -49,17 +38,37 @@ public class ProductEndPoint {
     }
 
     @PutMapping
-    public void updade(@RequestBody Product product) {
-
+    public ResponseEntity<?> update(@RequestBody Product product) {
+        try {
+            _productRepository.save(product);
+            return new ResponseEntity<>(new Response(true, "Produto atualizado com sucesso", product), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(new Response(false, "Erro ao atualizar o produto", product),
+                    HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
-    @DeleteMapping
-    public void delete() {
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            _productRepository.deleteById(id);
+            return new ResponseEntity<>(new Response(true, "Produto removido com sucesso"), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(new Response(false, "Erro ao remover o produto"),
+                    HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
 
-    @PatchMapping
-    public void path() {
+    @GetMapping
+    public ResponseEntity<?> get() {
+        return new ResponseEntity<>(new Response(true, "", _productRepository.findAll()), HttpStatus.OK);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable("id") Long id) {
+        var product = _productRepository.findById(id);
+        HttpStatus httpStatus = (product == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+        String message = (product == null ? "Produto não encontrado" : "");
+        return new ResponseEntity<>(new Response(false, message, product), httpStatus);
     }
 }

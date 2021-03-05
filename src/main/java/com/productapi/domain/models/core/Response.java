@@ -1,7 +1,8 @@
-package com.productapi.utils;
+package com.productapi.domain.models.core;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static java.util.Arrays.asList;
 
 public class Response<T> {
@@ -15,6 +16,13 @@ public class Response<T> {
         }
         _success = success;
         _data = data;
+    }
+
+    public Response(boolean success, String message) {
+        if (_messages == null && message != "") {
+            _messages = new ArrayList<Message>(asList(new Message(1, message)));
+        }
+        _success = success;
     }
 
     public boolean isSuccess() {
