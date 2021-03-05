@@ -7,7 +7,7 @@ import com.productapi.domain.models.core.AbstractEntity;
 @Entity
 public class Product extends AbstractEntity {
     private String name;
-    private double valor;
+    private double price;
 
     public String getName() {
         return name;
@@ -17,11 +17,11 @@ public class Product extends AbstractEntity {
         this.name = name;
     }
 
-    public double getValor() {
-        return valor;
+    public double getPrice() {
+        return price;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setValor(double price) {
+        this.price = price;
     }
 }
