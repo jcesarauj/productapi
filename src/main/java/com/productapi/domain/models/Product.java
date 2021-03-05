@@ -1,7 +1,6 @@
 package com.productapi.domain.models;
 
 import javax.persistence.Entity;
-
 import com.productapi.domain.models.core.AbstractEntity;
 
 @Entity

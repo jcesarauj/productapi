@@ -36,4 +36,11 @@ public class Response<T> {
     public T getData() {
         return _data;
     }
+
+    public void AddMessage(Message message) {
+        if (_messages == null) {
+            _messages = new ArrayList<Message>();
+        }
+        _messages.add(message);
+    }
 }
