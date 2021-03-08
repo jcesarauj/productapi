@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.Console;
+import java.util.List;
+
 import com.productapi.domain.models.Product;
 import com.productapi.repository.ProductRepository;
 import com.productapi.domain.models.core.*;
@@ -30,16 +33,28 @@ public class ProductEndPoint {
     public ResponseEntity<?> create(@RequestBody Product product) {
         try {
             _productRepository.save(product);
-            return new ResponseEntity<>(new Response(true, "Produto adicionado com sucesso", product), HttpStatus.OK);
+            return new ResponseEntity<>(new Response(true, "Produto adicionado com sucesso", product),
+                    HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(new Response(false, "Erro ao adicionar o produto", product),
                     HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
+    @GetMapping("/findbyname/{name}")
+    public ResponseEntity<?> FindByName(@PathVariable String name) {
+        return new ResponseEntity<>(new Response(true, "", _productRepository.findByNameIgnoreCaseContaining(name)),
+                HttpStatus.OK);
+    }
+
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Product product) {
         try {
+            var productEntity = _productRepository.findById(product.getId());
+            if (productEntity == null) {
+                return new ResponseEntity<>(new Response(false, "Produto não encontrado"), HttpStatus.NOT_FOUND);
+            }
+
             _productRepository.save(product);
             return new ResponseEntity<>(new Response(true, "Produto atualizado com sucesso", product), HttpStatus.OK);
         } catch (Exception ex) {
@@ -51,6 +66,12 @@ public class ProductEndPoint {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {
+            var product = _productRepository.findById(id);
+
+            if (product == null) {
+                return new ResponseEntity<>(new Response(false, "Produto não encontrado"), HttpStatus.NOT_FOUND);
+            }
+
             _productRepository.deleteById(id);
             return new ResponseEntity<>(new Response(true, "Produto removido com sucesso"), HttpStatus.OK);
         } catch (Exception ex) {
