@@ -1,23 +1,27 @@
-package com.productapi.domain.models;
+package com.productapi.domain.models.core.auth;
 
-import javax.persistence.ColumnResult;
-import javax.persistence.Entity;
-
+import javax.validation.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.github.damianwajser.validator.annotation.NotEmpty;
 import com.productapi.domain.models.core.AbstractEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
 @Entity
-public class User extends AbstractEntity {
+public class ApiUser extends AbstractEntity {
+    @NotEmpty
+    private boolean admin;
 
     @NotEmpty
-    @ColumnResult(unique = true)
+    @Column(unique = true)
     private String userName;
-    @NotEmpty
-    @JsonIgnore
-    private String password;
+
     @NotEmpty
     private String name;
+
+    @NotEmpty
+    @JsonIgnore
+    private String password;    
 
     public String getUserName() {
         return this.userName;
@@ -41,5 +45,13 @@ public class User extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }   
+    }
+
+    public boolean isAdmin() {
+        return this.admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }

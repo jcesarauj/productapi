@@ -21,7 +21,7 @@ import com.productapi.repository.ProductRepository;
 import com.productapi.domain.models.core.*;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("v1/products")
 public class ProductEndPoint {
     private final ProductRepository _productRepository;
 
